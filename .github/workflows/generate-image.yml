@@ -1,0 +1,30 @@
+name: Generate and Upload Image
+
+on:
+  schedule:
+    - cron: '0 */1 * * *' # 2時間ごとに実行
+
+jobs:
+  generate_and_upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run image generation script
+      run: python main.py
+      env:
+        HUGGING_FACE_API_KEY: ${{ secrets.HUGGING_FACE_API_KEY }}
+        GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
+        # GCS認証情報を環境変数に設定
+        GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GCP_SA_KEY }}
