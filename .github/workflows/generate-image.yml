@@ -3,7 +3,7 @@ name: Generate and Upload Image
 on:
   schedule:
     - cron: '0 */1 * * *' # 2時間ごとに実行
-　　 workflow_dispatch:
+　workflow_dispatch:
 jobs:
   generate_and_upload:
     runs-on: ubuntu-latest
